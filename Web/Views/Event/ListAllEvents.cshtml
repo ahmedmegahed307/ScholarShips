@@ -1,0 +1,46 @@
+﻿@model List<Entities.InterjectionDTO.EventDTO>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>ListAllEvents</title>
+    <!-- Vendor CSS Files -->
+    <link href="~TheEvent/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="~TheEvent/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~TheEvent/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="~TheEvent/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="~TheEvent/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="~TheEvent/assets/css/style.css" rel="stylesheet">
+</head>
+<body>
+
+    <div role="tabpanel" class="col-lg-9 tab-pane fade show active" id="day-1">
+
+
+
+        @foreach (var item in Model)
+        {
+            <div class="row schedule-item">
+                <div class="col-md-2"><time>@item.DeadLine</time></div>
+                <div class="col-md-10">
+                    <div class="speaker">
+                        <img src="@item.EventPhotoPath" alt="Brenden Legros">
+                    </div>
+                    <h4>@item.EventTitle</h4>
+                    <p>@item.EventRemark</p>
+                </div>
+            </div>
+        }
+
+
+    </div>
+</body>
+</html>

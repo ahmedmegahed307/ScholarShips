@@ -1,0 +1,103 @@
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core
+@using Entities.InterjectionDTO
+@model Entities.InterjectionDTO.CustomPostingDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper "*, cloudscribe.Web.Pagination"
+
+@{
+    Layout = null;
+}
+<h1>İlanlarım</h1>
+@{IEnumerable<PostingDTO> postingdto = ViewData["PostingDTO"] as IEnumerable<PostingDTO>;}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width" />
+    <title>İlanlarım Sayfası</title>
+
+</head>
+<body>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>PostingType</th>
+                        <th>TitleType</th>
+                        <th>Dicipline</th>
+                        <th>Quota</th>
+                        <th>Budget</th>
+                        <th>remark</th>
+                        <th>aktiflik</th>
+                        <th>başvurusayısı</th>
+
+                        <td><a href="/Posting/CreatePostingWeb" class="btn btn-warning">İlanOluştur</a> </td>
+
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.PostingDTOItems)
+                    {
+                        <tr>
+                            <td>@item.PostingType</td>
+                            <td>@item.TitleType</td>
+                            <td>@item.DisciplineType</td>
+                            <td>@item.Quota</td>
+                            <td>@item.Budget</td>
+                            <td>@item.Remark</td>
+                            <td>@item.IsActive</td>
+                            <td>@item.ApplyCount</td>
+                            <td><a href="/Posting/ApplicantsPosting/@item.Id" class="btn btn-warning">Başvuranları_Görüntüle</a> </td>
+                            <td><a href="/Posting/PostingModify/@item.Id" class="btn btn-warning">İlanDüzenle</a> </td>
+                            <td><a href="/Posting/DeletePosting/@item.Id" class="btn btn-warning">İlanSil</a> </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <cs-pager cs-paging-pagesize="@Model.PageIndex"
+              cs-paging-pagenumber="@Model.PageNumber"
+              cs-paging-totalitems="@Model.TotalPages"
+              cs-pagenumber-param="page"
+              asp-controller="Posting"
+              asp-action="MyPostingsWeb"
+              cs-pager-li-current-class="page-item active"
+cs-pager-li-other-class="page-item"
+cs-pager-li-non-active-class="page-item disabled"
+cs-pager-link-current-class="page-link"
+cs-pager-link-other-class="page-link"
+              ></cs-pager>
+
+
+</body>
+</html>
+
+
+<script type="text/javascript">
+
+
+
+
+
+
+
+
+</script>
+
+
+
+
+
+

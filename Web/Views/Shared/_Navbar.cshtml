@@ -1,0 +1,36 @@
+﻿<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-primary border-bottom box-shadow mb-3">
+    <div class="container">
+        <a class="navbar-brand" asp-area="" asp-controller="HomePage" asp-action="Index">Interjection</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+            <ul class="navbar-nav flex-grow-1">
+                <li class="nav-item">
+                    <a class="nav-link text-light" asp-area="" asp-controller="HomePage" asp-action="Index">PhDs</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                </li>
+                <li class="nav-item ms-sm-auto">
+                    <div class="dropdown">
+                        <button id="profileBtn" class="btn nav-link text-light dropdown-toggle d-none" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user m-1"></i>Profile</button>
+                        <ul class="dropdown-menu" aria-labelledby="profileMenu">
+                            <li><button class="dropdown-item" onclick="onPosting()">Post</button></li>
+                            <li><button class="dropdown-item" onclick="onEvent()">Event</button></li>
+                            <li><button class="dropdown-item" onclick="onLogout()">Logout</button></li>
+                            <li>
+                                <ul>
+                                    <li><a   asp-controller="language" asp-action="change" asp-route-culture="tr-TR"><img width="20" height="20" src="https://upload.wikimedia.org/wikipedia/commons/b/b4/Flag_of_Turkey.svg" /> Türkçe</a></li>
+                                    <li><a  asp-controller="language" asp-action="change" asp-route-culture="en-US"><img width="20" height="20" src="https://upload.wikimedia.org/wikipedia/commons/f/f5/Flag_of_the_United_States_%281912-1959%29.svg" /> English(US)</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <button id="loginBtn" class="btn nav-link text-light" data-bs-toggle="modal" data-bs-target="#Login"><i class="fas fa-user m-1"></i>Login / Register</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

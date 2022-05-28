@@ -1,0 +1,11 @@
+﻿<div>
+    <form asp-controller="Posting" asp-action="SingleFile" enctype="multipart/form-data" method="post">
+        <input type="file" multiple name="file" />
+        Cv Dosyanızın adını giriniz.
+        <input type="text" name="CvPathName" />
+        <div class="submit-holder"><input type="submit" value="Create" class="submit-edit" /></div>
+        @*<div>
+            <a asp-action="Index">Back to List</a>
+        </div>*@
+    </form>
+</div>

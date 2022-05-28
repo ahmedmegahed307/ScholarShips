@@ -1,0 +1,61 @@
+﻿@model List<Entities.InterjectionDTO.EventDTO>
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>GetUserEvent</title>
+</head>
+<body>
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+
+                        <th>Remark</th>
+                        <th>DeadLine</th>
+
+                        <th>img1</th>
+
+
+
+
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.EventTitle</td>
+
+                            <td>@item.EventRemark</td>
+                            <td>@item.DeadLine</td>
+
+                            <td> <img src="@item.EventPhotoPath" width="75" height="75" class="mr-2" alt="image"> </td>
+
+
+
+                            <td><a href="/Event/UpdateEventPage/@item.Id" class="btn btn-warning">Etkinlik Güncelle</a> </td>
+                            <td><a href="/Event/DeleteEvent/@item.Id" class="btn btn-warning">Etkinlik Sil</a> </td>
+
+
+                        </tr>
+                    }
+
+
+                </tbody>
+            </table>
+            <br />
+            <a href="/Event/Index/" class="btn btn-warning">Etkinlik Oluştur</a>
+        </div>
+    </div>
+</body>
+</html>

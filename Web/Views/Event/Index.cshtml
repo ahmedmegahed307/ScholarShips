@@ -1,0 +1,95 @@
+﻿@model Entities.InterjectionDTO.EventDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <title>Yeni Etkinlik İlanı Oluşturma</title>
+</head>
+<body>
+
+    <form id="frmCreatePosting" enctype="multipart/form-data">
+
+
+
+        <div class="form-group">
+            <label asp-for="EventTitle"></label>
+            <input id="Title" class="form-control" type="text" /><br><br>
+
+        </div>
+        <div class="form-group">
+            <label asp-for="EventRemark"></label>
+
+            <textarea id="Remark" class="form-control"></textarea>
+        </div>
+        <div class="form-group">
+            <label asp-for="DeadLine"></label>
+
+            <input type="date" id="birthday" name="birthday">
+        </div>
+        
+
+
+
+
+
+
+        <div>
+            <label asp-for="EventImagePath"></label>
+            @*<div><img src="@Model.İmage1" width="75" height="75"></div>
+            <div><img src="@Model.İmage2" width="75" height="75"></div>
+            <div><img src="@Model.İmage3" width="75" height="75"></div>
+            <div><img src="@Model.İmage4" width="75" height="75"></div>*@
+            <input type="file" id="file" name="file" accept="image/jpeg, image/jpg, image/png" />
+            <span asp-validation-for="EventImagePath"></span>
+        </div>
+
+        <button type="button" onclick="onCreateEvent()" class="btn btn-primary">İlanı Aç</button>
+    </form>
+</body>
+</html>
+<script type="text/javascript">
+     function onCreateEvent() {
+
+        var fileUpload = $("#file").get(0);
+
+        var files = fileUpload.files;
+
+         var formData = new FormData();
+         formData.append(files.name, files);
+         /*
+        for (var i = 0; i < files.length; i++) {
+            formData.append(files[i].name, files[i]);
+        }
+        */
+
+        formData.append("EventTitle", $("#Title").val());
+         formData.append("EventRemark", $("#Remark").val());
+         formData.append("DeadLine", $("#birthday").val());
+        
+       
+
+
+        $.ajax({
+            type: 'POST',
+            url: "@Url.Action("CreateNewEvent", "Event")",//burada web deki controller'u çağırıyor.
+            data: formData,
+            processData: false,
+            contentType: false
+        }).done(function (response) {
+            if (response.success == true) {
+                alert(response.message);
+                     window.location.href = "@Url.Action("GetAllEvents", "Event")";//başarılı olursa buraya gitsin
+
+            }
+        });
+    }
+</script>

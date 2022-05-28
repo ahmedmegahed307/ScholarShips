@@ -1,0 +1,150 @@
+﻿@using X.PagedList.Mvc.Core
+@using X.PagedList
+@using Entities.InterjectionDTO
+@model CustomPostingDTO
+@*
+*@
+@{
+    ViewBag.Title = "PhDs";
+}
+
+
+@{IEnumerable<PostingDTO> posts = ViewData["PostingDTO"] as IEnumerable<PostingDTO>;}
+@*@{IEnumerable<PostingDTO> posts = ViewBag.PostingDTO as IEnumerable<PostingDTO>;}*@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    @*<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>*@
+    <script src="https://kit.fontawesome.com/3565d770cd.js" crossorigin="anonymous"></script>
+    @*Scriptler ve stiller ayrı dosyaya atılacak*@
+<script type="text/javascript">
+           function onConfirmedMail()
+            {
+               window.location.href = "@Url.Action("EmailConformation", "MyAccount")";
+              }
+            function onLogin()
+            {
+               window.location.href = "@Url.Action("Index", "Login")";
+              }
+
+            function onPosting()
+            {
+               window.location.href = "@Url.Action("CreatePostingWeb", "Posting")";
+              }
+              function onEvent()
+                {
+               window.location.href = "@Url.Action("GetAllEvents", "Event")";
+               }
+
+            function onLogout()
+            {
+               window.location.href = "@Url.Action("LogOff","Login")";
+            }
+</script>
+    <style>
+        .icons {
+            color: rgb(48, 122, 231);
+            font-size: 3vw;
+        }
+
+        .title {
+            font-size: x-large;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .card {
+            height: fit-content;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="contain" class="container mt-3 d-flex">
+
+
+        @await Html.PartialAsync("~/Views/HomePage/SideBar.cshtml")
+
+        @*Kategori kısmındaki responsive problemi giderilecek*@
+        <div class="container">
+            @await Html.PartialAsync("~/Views/HomePage/CategoryButtons.cshtml")
+            <div class="row m-2">
+                <p style="text-align:justify">
+                    Aliquam et ante imperdiet, pretium orci nec, condimentum mauris. Suspendisse et feugiat nibh. Ut pellentesque gravida libero, eget pellentesque nulla dapibus at.
+                    In accumsan bibendum nibh, vel lacinia nisi vehicula eu. Nulla id bibendum nisl, et sollicitudin massa. Proin suscipit ligula ac lacinia cursus.
+                    Sed facilisis dolor magna, non cursus ante fermentum et. Fusce convallis ut risus eu vulputate. Mauris sit amet orci non risus gravida pulvinar a in sem.
+                    Curabitur ac ipsum at felis blandit consectetur ac nec libero. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+                    Vestibulum laoreet, magna eget euismod aliquet, orci odio tincidunt tellus, sit amet ultrices mauris diam id odio. Donec tempor odio eu dictum maximus.
+                    Integer imperdiet dolor a vulputate cursus. Maecenas.
+                </p>
+                
+
+
+                @*<div id = "list"></div>
+                    <div id = "pagination"></div>*@
+                @*  Deneme  *@
+                @foreach (var item in posts)
+                {
+                    <div class="container" style="text-align:justify">
+                        <a href="" class="title">@item.Remark </a>
+                        <div class="d-flex flex-row mt-3">
+                            <div class="col-4">
+                                <p>Status: @item.IsActive</p>
+                                <p>Publisher: @item.UserName @item.UserSurName</p>
+                                <p>University:@item.UniversityName</p>
+                                <p>Subject: @item.DisciplineType</p>
+                                <p>Posting Type:@item.PostingType</p>
+                                <p>Title:@item.TitleType</p>
+                            </div>
+                            <div class="col-8">
+                                <p>
+                                    @item.Remark
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p>    <a href="#" id="bttnSavePosting" class="btn btn-primary btn-sm" data-id="@item.Id">İlanı Kaydet</a>     </p>
+
+                    <p>         <a href="#" id="btnApply" class="btn btn-primary btn-sm" data-id="@item.Id">Apply</a>     </p>
+
+                }
+
+                <partial name="/Views/Shared/_Apply.cshtml" model="Model" />
+                <partial name="/Views/Shared/_SavedPosting.cshtml" model="Model" />
+
+            </div>
+        </div>
+
+    </div>
+    <button class="btn" type="button" onclick="onConfirmedMail()">mailonayla</button>
+
+    @Html.PagedListPager((IPagedList)posts, page => Url.Action("Index", new { page = page }))
+    <script type="text/javascript" src="~/js/listing.js">
+
+    </script>
+    <script type="text/javascript">
+        $(function () {
+
+            $("body").on('click', '#btnApply', function () {
+                $("#MyPopup").modal("hide");
+                $('#txtId').val($(this).attr('data-id'));
+                $("#MyPopup").modal("show");
+            })
+        })
+    </script>
+</body>
+</html>
+

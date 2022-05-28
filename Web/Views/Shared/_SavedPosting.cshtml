@@ -1,0 +1,69 @@
+﻿@model Entities.InterjectionDTO.CustomPostingDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+
+
+
+</head>
+<body>
+
+
+    @*<div class="form-group">
+        <input type="button"  value="İlanıKaydet"  data="item.Id" onclick="SavedPostingbtn()" class="btn btn-success btn-sm" />
+    </div>*@
+
+
+
+</body>
+</html>
+
+
+
+<script type="text/javascript">
+
+    $(function () {
+        $("body").on('click', '#bttnSavePosting', function () {
+            $('#txtId').val($(this).attr('data-id'));
+        var formData = new FormData();
+        formData.append("PostingId", $("#txtId").val());
+
+        $.ajax({
+            type: 'POST',
+            url: "@Url.Action("SavedPosting", "Posting")",
+            data: formData,
+            processData: false,
+            contentType: false
+        }).done(function (response) {
+            if (response.success == true) {
+                alert(response.message);
+            }
+        });
+        })
+    })
+    //function SavedPostingbtn() {
+    //    $('#txtId').val($(this).attr('data-id'));
+
+
+    //}
+
+
+
+
+</script>
+
+
+
+
+
+

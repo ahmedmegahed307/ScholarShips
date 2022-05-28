@@ -1,0 +1,125 @@
+﻿@model Entities.InterjectionDTO.CustomPostingDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body onload = "responsiveCollapseView(); userMenu();">
+    <header>
+        <partial name="_Navbar" />
+    </header>
+    <div class="container">
+       <partial name="_LoginModal" model="Model"/>
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2022 - DATASURGERY - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+    function loggedIn(){
+        var loginBtn = document.getElementById("loginBtn");
+        profileBtn.classList.remove("d-none");
+        loginBtn.classList.add("d-none");
+    }
+    function loggedOff(){
+        var profileBtn = document.getElementById("profileBtn");
+        profileBtn.classList.add("d-none");
+        loginBtn.classList.remove("d-none");
+    }
+        function userMenu() {
+        if ("@Model.UserDTOItems.Email" == "")
+        {
+            loggedOff();
+        }
+        else{
+            loggedIn();
+        }
+    }
+    function initLogin() {                         //giriş  kayıtlarının gönderildigi yer
+        var formData = $("#loginForm").serializeArray();
+        var resutl= $.ajax({
+           type: "POST",
+           url: "@Url.Action("Login", "Login")",
+           data:  formData ,
+           dataType: "json",
+           async: false,
+           success: function (result) {
+              if (result.success == true) {
+                 alert("BAŞARILI!");
+                 window.location.href = 'HomePage/Index?success=' + result.success;
+               }
+               else { alert("fail!"); }
+               }
+            }).responseJSON;
+        }
+        
+    function initRegister() {                                         //form kayıt işlemleri
+      var formData = $("#registerForm").serializeArray();
+      var result = $.ajax({
+         type: "POST",
+         url: "@Url.Action("CreateUserWeb", "Login")",
+         data:  formData ,
+         dataType: "json",
+         async: false,
+         success: function (result) {
+              if (result.success == true) {
+                     alert("BAŞARILI!");
+                     window.location.href = "@Url.Action("Index", "Login")";
+              }
+              else if (result.success == false) {
+                     $("#Email").attr("autocomplete", "off");
+                     alert("böyle bir kullanıcı zaten kayıtlı!");
+              }
+              else { alert("fail!");
+                     window.location.href = "@Url.Action("Index2", "Login")";
+                   }
+             }
+
+       }).responseJSON;
+   }
+
+    function responsiveCollapseView() {
+            let desktopView = innerWidth;
+            if(desktopView > "992")
+            {
+                var element = document.getElementById("form");
+                var element2 = document.getElementById("contain");
+                var element3 = document.getElementById("kart");
+                element.classList.add("show");
+                element2.classList.remove("flex-column");
+                element2.classList.remove("align-items-center");
+                element3.classList.remove("col-12");
+                element3.classList.add("col-3");
+            }
+            else if(desktopView < "992"){
+                var element = document.getElementById("form");
+                var element2 = document.getElementById("contain");
+                var element3 = document.getElementById("kart");
+                element.classList.remove("show");  
+                element2.classList.add("flex-column");
+                element2.classList.add("align-items-center");
+                element3.classList.remove("col-3");
+                element3.classList.add("col-12");
+            }
+            window.onresize = responsiveCollapseView;
+            };
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

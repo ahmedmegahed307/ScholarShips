@@ -1,0 +1,142 @@
+﻿@using X.PagedList.Mvc.Core
+@using X.PagedList
+@addTagHelper "*, cloudscribe.Web.Pagination"
+@model Entities.InterjectionDTO.CustomPostingDTO
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    Layout = null;
+}
+<h1>BuİlanaİlanaBaşvuranlar</h1>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+
+
+    <title>Index</title>
+
+</head>
+<body>
+
+    <div></div>
+    <form>
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ProfilPath</th>
+                            <th>FirtName</th>
+                            <th>LastName</th>
+
+
+                            <td><a href="/Posting/CreatePostingWeb" class="btn btn-warning">İlanOluştur</a> </td>
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.ApplicantsPostingDTOItems)
+                        {
+                            <tr>
+                                <td> <img src="@item.ProfilPhotoPath" /></td>
+                                <td>@item.FirstName.</td>
+                                <td>@item.LastName</td>
+
+                                <td>         <a href="#" id="btnApply" class="btn btn-primary btn-sm" data-id="@item.Id">başvuruyu görüntüle</a>     </td>
+                                <td>
+                                    <div id="MyPopup" class="modal fade" role="dialog">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">
+                                                        &times;
+                                                    </button>
+                                                    <h4 class="modal-title">Customer Details</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="container">
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                             Name :  @item.FirstName <br />
+                                                             Surname :  @item.LastName <br />
+                                                                <iframe src="@item.CVPath" class="w-100"></iframe>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <input type="button" id="btnClosePopup" value="Close" data-dismiss="modal" class="btn btn-danger" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </form>
+
+    <cs-pager cs-paging-pagesize="@Model.PageIndex"
+              cs-paging-pagenumber="@Model.PageNumber"
+              cs-paging-totalitems="@Model.TotalPages"
+              cs-pagenumber-param="page"
+              asp-controller="Posting"
+              asp-action="ApplicantsPosting"
+              cs-pager-li-current-class="page-item active"
+              cs-pager-li-other-class="page-item"
+              cs-pager-li-non-active-class="page-item disabled"
+              cs-pager-link-current-class="page-link"
+              cs-pager-link-other-class="page-link"></cs-pager>
+
+
+</body>
+</html>
+
+
+<button onclick="OnUploadCV()">CvYükle</button>
+
+<script type="text/javascript">
+
+
+
+    function OnUploadCV() {
+
+       window.location.href = "@Url.Action("UploadCV", "Apply")";
+
+    }
+
+    $(function () {
+        $("body").on('click', '#btnApply', function () {
+            $("#MyPopup").modal("hide");
+            $('#txtId').val($(this).attr('data-id'));
+            $("#MyPopup").modal("show");
+
+        })
+    })
+
+
+
+
+</script>
+
+
+
+
+
+

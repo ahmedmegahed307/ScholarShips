@@ -1,0 +1,61 @@
+﻿@using Entities.InterjectionDTO
+@using X.PagedList.Mvc.Core
+@using X.PagedList
+@model CustomPostingDTO
+@{
+    ViewData["Title"] = "FilteredPosts";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{IEnumerable<PostingDTO> posts = ViewData["PostingDTOs"] as IEnumerable<PostingDTO>;}
+<body>
+    <div id="contain" class="container mt-3 d-flex">
+
+        @await Html.PartialAsync("~/Views/HomePage/SideBar.cshtml")
+
+
+        <div class="container">
+            @*@await Html.PartialAsync("~/Views/HomePage/CategoryButtons.cshtml")*@
+            <div class="row m-2">
+                @foreach (var item in posts)
+                {
+                    <div class="container" style="text-align:justify">
+                        <a href="" class="title">@item.Remark </a>
+                        <div class="d-flex flex-row mt-3">
+                            <div class="col-4">
+                                <p>Status: @item.IsActive</p>
+                                <p>Publisher: @item.UserName @item.UserSurName</p>
+                                <p>University:@item.UniversityName</p>
+                                <p>Subject: @item.DisciplineType</p>
+                                <p>Posting Type:@item.PostingType</p>
+                                <p>Title:@item.TitleType</p>
+                            </div>
+                            <div class="col-8">
+                                <p>
+                                    @item.Remark
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <p>    <a href="#" id="bttnSavePosting" class="btn btn-primary btn-sm" data-id="@item.Id">İlanı Kaydet</a>     </p>
+
+                    <p>         <a href="#" id="btnApply" class="btn btn-primary btn-sm" data-id="@item.Id">Apply</a>     </p>
+                }
+                <partial name="/Views/Shared/_Apply.cshtml" model="Model" />
+                <partial name="/Views/Shared/_SavedPosting.cshtml" model="Model" />
+            </div>
+        </div>
+    </div>
+    @Html.PagedListPager((IPagedList)posts, page => Url.Action("FilteredPosts", new { page = page, ViewBag.PostingTypeId, ViewBag.TitleId, ViewBag.DisciplineId, ViewBag.CountryId }))
+</body>
+
+<script type="text/javascript">
+        $(function () {
+
+            $("body").on('click', '#btnApply', function () {
+                $("#MyPopup").modal("hide");
+                $('#txtId').val($(this).attr('data-id'));
+                $("#MyPopup").modal("show");
+            })
+        })
+</script>

@@ -1,0 +1,173 @@
+﻿@model Entities.InterjectionDTO.PostingDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = null;
+}
+<h1>ilangüncellemesayfası</h1>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+    <meta name="viewport" content="width=device-width" />
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+
+    <title>Index</title>
+
+</head>
+<body>
+
+
+    <form id="frmCreatePosting" asp-action="UpdatePostingWeb" asp-controller="Posting" metod="post" data-ajax-success="OnSuccess" data-ajax="true" enctype="multipart/form-data">
+
+        <div>
+            <input id="txtId" type="hidden" asp-for="Id" value="@Model.Id">
+        </div>
+        <div class="form-group">
+
+            <label style="font-weight: bold;font-size: medium;">PostingId :</label>
+            <select id="PostingTypeId" asp-for="PostingTypeId" asp-items="(IEnumerable<SelectListItem>)@ViewData["PostingTypeDTO"]">
+                <option value="">Lütfen Post Tipini Seçiniz</option>
+            </select>
+            <span asp-validation-for="PostingTypeId"></span>
+        </div>
+        <div class="form-group">
+            <label style="font-weight: bold;font-size: medium;">TitleId :</label>
+            <select id="TitleId" asp-for="TitleId" asp-items="(IEnumerable<SelectListItem>)@ViewData["TitleDTO"]">
+                <option value="">Lütfen Başlığı Seçiniz</option>
+            </select>
+            <span asp-validation-for="TitleId"></span>
+        </div>
+        <div class="form-group">
+            <label style="font-weight: bold;font-size: medium;">DiciplineId :</label>
+            <select id="DisciplineId" asp-for="DisciplineId" asp-items="(IEnumerable<SelectListItem>)@ViewData["DisciplineDTO"]">
+                <option value="">Lütfen Diciplin Türünü Seçiniz</option>
+            </select>
+            <span asp-validation-for="TitleId"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Remark"></label>
+            <input id="Remark" asp-for="Remark" class="form-control" type="text" /><br><br>
+            <span asp-validation-for="Remark"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Budget"></label>
+            <select id="Budget" asp-for="Budget" asp-items="new SelectList(@ViewBag.Budget)">
+                <option value="">Lütfen bütçe Seçiniz</option>
+            </select>
+            <span asp-validation-for="Budget"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Quota"></label>
+            <select asp-for="Quota" id="Quota" asp-items="new SelectList(@ViewBag.Quota)">
+                <option value="">Lütfen kota Seçiniz</option>
+            </select>
+            <span asp-validation-for="Quota"></span>
+        </div>
+        <div class="form-group">
+            <div>
+                <label class="col-md-4 control-label">Country Name</label>
+                <select class="form-control" id="Countryyy"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div>
+                <label class="col-md-4 control-label">University Name</label>
+                <select asp-for="UniversityId" id="UniversityId" class="form-control"></select>
+                <span asp-validation-for="UniversityId"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="StartTime"></label>
+            <input id="StartTime" asp-for="StartTime" class="form-control" type="date" min="2022-01-01" max="2023-01-01" />
+            <span asp-validation-for="StartTime"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="FinishTime"></label>
+            <input id="FinishTime" asp-for="FinishTime" class="form-control" type="date" min="2022-01-01" max="2023-01-01" /><br><br>
+            <span asp-validation-for="FinishTime"></span>
+        </div>
+
+        <button>İlanıGüncelle</button>
+
+    </form>
+
+</body>
+</html>
+
+
+
+
+<script type="text/javascript">
+
+     var OnSuccess = function (response) {
+         alert("Success: " + response.success + " Messajınız:" + response.message +"Yönlendiriliyorsunuz...");
+                     window.location.href = "@Url.Action("MyPostingsWeb", "Posting")";
+
+    };
+    function onGetPosting() {
+         window.location.href = "@Url.Action("MyPostingsWeb", "Posting")";
+    }
+
+
+
+
+
+
+        var Countryyy = $('#Countryyy');                    // Ülke listelenme işlemleri
+    Countryyy.append($("<option></option>").val('').html('Please Select Country'));
+    $.ajax({
+        url: "@Url.Action("GetCountry", "Posting")",
+        type: 'GET',
+        dataType: 'json',
+        success: function (d) {
+            $.each(d, function (i, country) {
+                Countryyy.append($("<option></option>").val(country.id).html(country.countries));
+            });
+        },
+        error: function () {
+            alert('Error!');
+        }
+    });
+
+
+
+
+    $("#Countryyy").change(function () {                                 // Universite listelenme işlemleri
+        var CountryId = parseInt($(this).val());
+
+        if (!isNaN(CountryId)) {
+            var UniversityId = $('#UniversityId');
+            UniversityId.empty();
+            UniversityId.append($("<option></option>").val('').html('Please wait ...'));
+
+            $.ajax({
+                url: "@Url.Action("GetUniversityWeb", "Posting")",
+                type: 'GET',
+                dataType: 'json',
+                data: { Id: CountryId },
+                success: function (d) {
+
+                    UniversityId.empty();
+                    UniversityId.append($("<option></option>").val('').html('Select University '));
+                    $.each(d, function (i, item) {
+                        UniversityId.append($("<option></option>").val(item.id).html(item.name));
+                    });
+                },
+                error: function () {
+                    alert('Error!');
+                }
+            });
+        }
+
+
+    });
+
+</script>

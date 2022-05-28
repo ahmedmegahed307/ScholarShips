@@ -1,0 +1,231 @@
+﻿@model Entities.InterjectionDTO.UpdateUserDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = null;
+}
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+    <meta name="viewport" content="width=device-width" />
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+
+    <title>My Detail</title>
+
+</head>
+<body>
+
+
+    <div class="container">
+        <h3>My Detail</h3>
+        <form id="frmUserUpdate" asp-action="UpdatePost" asp-controller="Individuals" metod="post" data-ajax-success="OnSuccess" data-ajax="true" enctype="multipart/form-data">
+           
+            <div>
+                <input id="txtId" type="hidden" asp-for="Id" value="@Model.Id">
+                <input id="password" type="hidden" asp-for="Password" value="@Model.Password">
+                <input id="createdDate" type="hidden" asp-for="CreateDate" value="@Model.CreateDate">
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Email"></label>
+                <input id="Email" class="form-control" type="email" value="@Model.Email" /><br><br>
+            </div>
+            <div class="form-group">
+                <label asp-for="FirstName"></label>
+                <input id="FirstName" class="form-control" type="text" value="@Model.FirstName" /><br><br>
+
+            </div>
+            <div class="form-group">
+                <label asp-for="LastName"></label>
+                <input id="LastName" class="form-control" type="text" value="@Model.LastName" /> </<br><br>
+            </div>
+
+            <label style="font-weight: bold; font-size: medium;">Discipline :</label>
+            <select id="DisciplineId" asp-for="DisciplineId" asp-items="(IEnumerable<SelectListItem>)@ViewData["DisciplineDTO"]">
+                <option value="">Lütfen Discipline Tipini Seçiniz</option>
+            </select>
+            <span asp-validation-for="DisciplineId"></span>
+            <div class="form-group">
+                <label style="font-weight: bold; font-size: medium;">Title :</label>
+                <select id="TitleId" asp-for="TitleId" asp-items="(IEnumerable<SelectListItem>)@ViewData["TitleDTO"]">
+                    <option value="">Lütfen Başlığı Seçiniz</option>
+                </select>
+                <span asp-validation-for="TitleId"></span>
+            </div>
+
+            <div class="form-group">
+                <label style="font-weight: bold; font-size: medium;">Country :</label>
+                <select id="CountryId" asp-for="CountryId" asp-items="(IEnumerable<SelectListItem>)@ViewData["CountryDTO"]">
+                    <option value="">Lütfen Ülke Seçiniz</option>
+                </select>
+                <span asp-validation-for="CountryId"></span>
+            </div>
+
+            <div class="form-group">
+                <label style="font-weight: bold; font-size: medium;">City :</label>
+                <select id="CityId" asp-for="CityId" asp-items="(IEnumerable<SelectListItem>)@ViewData["CityDTO"]">
+                    <option value="">Lütfen Şehir Seçiniz</option>
+                </select>
+                <span asp-validation-for="CityId"></span>
+            </div>
+            <div class="form-group">
+                <label style="font-weight: bold; font-size: medium;">University :</label>
+                <select id="UniversityId" asp-for="UniversityId" asp-items="(IEnumerable<SelectListItem>)@ViewData["UniversityDTO"]">
+                    <option value="">Lütfen University Seçiniz</option>
+                </select>
+                <span asp-validation-for="UniversityId"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateOfBirth"></label>
+                <input type="date" id="DateOfBirth" name="DateOfBirth" value="@Model.DateOfBirth">
+            </div>
+
+            <button onclick="onUpdateUser()">Update</button>
+        </form>
+    </div>
+</body>
+</html>
+
+
+
+
+<script type="text/javascript">
+
+     var OnSuccess = function (response) {
+         alert("Success: " + response.success + " Messajınız:" + response.message +"Yönlendiriliyorsunuz...");
+                     window.location.href = "@Url.Action("Update", "Individuals")";
+
+    };
+    function onGetUser() {
+         window.location.href = "@Url.Action("Update", "Individuals")";
+    }
+
+
+    function onUpdateUser() {
+
+        var formData = new FormData();
+        formData.append("Id", $("#txtId").val());
+        formData.append("Email", $("#Email").val());
+        formData.append("Password", $("#password").val());
+        formData.append("FirstName", $("#FirstName").val());
+        formData.append("LastName", $("#LastName").val());
+        formData.append("TitleId", $("#TitleId").val());
+        formData.append("DisciplineId", $("#DisciplineId").val());
+        formData.append("CountryId", $("#CountryId").val());
+        formData.append("CityId", $("#CityId").val());
+        formData.append("UniversityId", $("#UniversityId").val());
+        formData.append("DateOfBirth", $("#DateOfBirth").val());
+        formData.append("CreateDate", $("#createdDate").val());
+
+
+
+
+        $.ajax({
+            type: 'POST',
+            url: "@Url.Action("UpdatePost", "Individuals")",
+            data: formData,
+            processData: false,
+            contentType: false,
+                error: function (data) { alert("eksik alan bırakmayın"); },
+            success: function (response) {
+
+                    alert("başarılı");
+                    window.location.href = "@Url.Action("Update", "Individuals")";
+
+            }
+
+        });
+    }
+
+
+
+
+        var Country = $('#CountryId');                    // Ülke listelenme işlemleri
+     Country.append($("<option></option>").val('').html('Please Select Country'));
+    $.ajax({
+        url: "@Url.Action("GetListCountryDTO", "Definition")",
+        type: 'GET',
+        dataType: 'json',
+        success: function (d) {
+            $.each(d, function (i, country) {
+                Country.append($("<option></option>").val(country.id).html(country.countries));
+            });
+        },
+        error: function () {
+            alert('Error!');
+        }
+    });
+
+
+
+
+    $("#CountryId").change(function () {                                 // Universite listelenme işlemleri
+        var CountryId = parseInt($(this).val());
+
+        if (!isNaN(CountryId)) {
+            var UniversityId = $('#UniversityId');
+            UniversityId.empty();
+            UniversityId.append($("<option></option>").val('').html('Please wait ...'));
+
+            $.ajax({
+                url: "@Url.Action("GetUniversityWeb", "Posting")",
+                type: 'GET',
+                dataType: 'json',
+                data: { Id: CountryId },
+                success: function (d) {
+
+                    UniversityId.empty();
+                    UniversityId.append($("<option></option>").val('').html('Select University '));
+                    $.each(d, function (i, item) {
+                        UniversityId.append($("<option></option>").val(item.id).html(item.name));
+                    });
+                },
+                error: function () {
+                    alert('Error!');
+                }
+            });
+        }
+
+
+    });
+
+     $("#CountryId").change(function () {                                 // City listelenme işlemleri
+         var CountryId = parseInt($(this).val());
+
+         if (!isNaN(CountryId)) {
+             var CityId = $('#CityId');
+             CityId.empty();
+             CityId.append($("<option></option>").val('').html('Please wait ...'));
+
+             $.ajax({
+                 url: "@Url.Action("GetCity", "Individuals")",
+                 type: 'GET',
+                 dataType: 'json',
+                 data: { Id: CountryId },
+                 success: function (d) {
+
+                     CityId.empty();
+                     CityId.append($("<option></option>").val('').html('Select City'));
+                     $.each(d, function (i, item) {
+                         CityId.append($("<option></option>").val(item.id).html(item.cityname));
+                     });
+                 },
+                 error: function () {
+                     alert('Error!');
+                 }
+             });
+         }
+
+
+     });
+
+</script>

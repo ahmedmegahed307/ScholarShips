@@ -1,0 +1,79 @@
+﻿@model Entities.InterjectionDTO.CustomPostingDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+ <div class="modal fade" id="Login" tabindex="-1" aria-labelledby="LoginModal" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <ul class="nav nav-pills" id="modalTabs" role="tablist">
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="login-tab" data-bs-toggle="pill" data-bs-target="#log" type="button" role="tab" aria-controls="home" aria-selected="true">Login</button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="register-tab" data-bs-toggle="pill" data-bs-target="#reg" type="button" role="tab" aria-controls="profile" aria-selected="false">Register</button>
+                  </li>
+                </ul>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="tab-content" id="myTabContent">
+                  @*login*@ 
+              <div class="tab-pane fade show active" id="log" role="tabpanel" aria-labelledby="login-tab">
+              <form asp-action="Login" asp-controller="Login" method="post" id="loginForm">
+              <div class="modal-body">
+                  <div asp-validation-summary="All" class="text-danger"></div>
+                  <label asp-for="UserDTOItems.Email" class="form-label">E-Mail:</label>
+                  <input asp-for="UserDTOItems.Email" class="form-control" type="text" placeholder="E-Mail">
+                  <span asp-validation-for="UserDTOItems.Email" class="text-danger"></span>
+                  <label asp-for="UserDTOItems.Password" class="form-label">Password:</label>
+                  <input asp-for="UserDTOItems.Password" class="form-control" type="text" placeholder="Password">
+                  <span asp-validation-for="UserDTOItems.Password" class="text-danger"></span>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" onclick="initLogin()" class="btn btn-primary">Login</button>
+              </div>
+              </form>
+              </div>
+              @*register*@
+              <div class="tab-pane fade" id="reg" role="tabpanel" aria-labelledby="register-tab">
+              <form asp-action="SignUpWeb" asp-controller="Individuals" method="post" id="registerForm">
+              <div class="modal-body">
+                  <label asp-for="UserDTOItems.FirstName" class="form-label">Name:</label>
+                  <input asp-for="UserDTOItems.FirstName" class="form-control" type="text" placeholder="Name">
+                  <span asp-validation-for="UserDTOItems.FirstName" class="text-danger"></span>
+                  
+                  <label asp-for="UserDTOItems.LastName" class="form-label">Surname:</label>
+                  <input asp-for="UserDTOItems.LastName" class="form-control" type="text" placeholder="Surname">
+                  <span asp-validation-for="UserDTOItems.LastName" class="text-danger"></span>
+                  
+                  <label asp-for="UserDTOItems.Email" class="form-label">E-Mail:</label>
+                  <input asp-for="UserDTOItems.Email" id="Email" class="form-control" type="text" placeholder="E-Mail">
+                  <span asp-validation-for="UserDTOItems.Email" class="text-danger"></span>
+                  
+                  <label asp-for="UserDTOItems.Password" class="form-label">Password:</label>
+                  <input asp-for="UserDTOItems.Password" class="form-control" type="text" placeholder="Password">
+                  <span asp-validation-for="UserDTOItems.Password" class="text-danger"></span>
+
+                  <label asp-for="UserDTOItems.RoleId" class="form-label">Role:</label>
+                        <select asp-for="UserDTOItems.RoleId"  asp-items="(IEnumerable<SelectListItem>)@ViewData["RoleDTO"]" class="form-select">
+                            <option value="">Please select a role</option>
+                        </select>
+                  
+                  <label for="Country" class="form-label">Country:</label>
+                        <select id="Country" class="form-select">
+                        </select>
+                  
+                  <label for="City" class="form-label">City:</label>
+                        <select asp-for="UserDTOItems.CityId" id="City" class="form-select">
+                        </select>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" onclick="initRegister()" class="btn btn-primary">Register</button>
+              </div>
+              </form>
+              </div>              
+              </div>
+            </div>
+          </div>
+        </div>

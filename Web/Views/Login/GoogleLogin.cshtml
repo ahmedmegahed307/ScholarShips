@@ -1,0 +1,25 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>GoogleLogin</title>
+    
+</head>
+<body>
+    <p><a asp-area="" asp-controller="Login" asp-action="GoogleLogin">Login With Google</a></p>
+    <ul>
+        @if (Context.User.Identity.IsAuthenticated) { 
+            <li><a>Hello @User.Identity.Name</a></li>
+            
+            <li><a asp-controller="Login" asp-action="Logout">Logout</a></li>
+            
+        }
+    </ul>
+</body>
+</html>

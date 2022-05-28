@@ -1,0 +1,99 @@
+﻿@model Entities.InterjectionDTO.EventDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>UpdatSelectedEventPage</title>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+</head>
+<body>
+    <form id="frmCreateEvent" asp-action="UpdateEvent" asp-controller="Event" metod="post"  enctype="multipart/form-data">
+
+
+        <div>
+            <input id="txtId" type="hidden" asp-for="Id" value="@Model.Id">
+        </div>
+        <div class="form-group">
+            <label asp-for="EventTitle"></label>
+            <input id="Title" class="form-control" type="text" value="@Model.EventTitle"/><br><br>
+
+        </div>
+        <div class="form-group">
+            <label asp-for="EventRemark"></label>
+
+            <textarea id="Remark" class="form-control" value="@Model.EventRemark"></textarea>
+        </div>
+        <div class="form-group">
+            <label asp-for="DeadLine"></label>
+
+            <input type="date" id="birthday" name="birthday" value="@Model.DeadLine">
+        </div>
+
+
+
+
+
+
+
+        <div>
+            <label asp-for="EventImagePath"></label>
+         
+            <input type="file" id="file" name="file" accept="image/jpeg, image/jpg, image/png" value="@Model.EventImagePath"/>
+            <span asp-validation-for="EventImagePath"></span>
+        </div>
+
+        <button type="button" onclick="onUpdateEvent()" class="btn btn-primary">İlanı Güncelle</button>
+    </form>
+</body>
+</html>
+<script type="text/javascript">
+
+     function onUpdateEvent() {
+
+        var fileUpload = $("#file").get(0);
+
+        var files = fileUpload.files;
+
+         var formData = new FormData();
+         formData.append(files.name, files);
+         /*
+        for (var i = 0; i < files.length; i++) {
+            formData.append(files[i].name, files[i]);
+        }
+        */
+         formData.append("Id", $("#txtId").val());
+        formData.append("EventTitle", $("#Title").val());
+         formData.append("EventRemark", $("#Remark").val());
+         formData.append("DeadLine", $("#birthday").val());
+
+
+
+
+        $.ajax({
+            type: 'POST',
+            url: "@Url.Action("UpdateEvent", "Event")",
+            data: formData,
+            processData: false,
+            contentType: false
+        }).done(function (response) {
+            if (response.success == true) {
+                alert(response.message);
+                     window.location.href = "@Url.Action("GetAllEvents", "Event")";//başarılı olursa buraya gitsin
+
+            }
+        });
+    }
+
+</script>
+

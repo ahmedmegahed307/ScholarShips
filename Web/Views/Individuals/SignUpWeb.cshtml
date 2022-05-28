@@ -1,0 +1,123 @@
+﻿@model Entities.InterjectionDTO.RegisterDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = null;
+}
+<h1>Kaydol</h1>
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link rel="shortcut icon" href="#">
+
+</head>
+<body>
+
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-action="SignUpWeb" asp-controller="Individuals" method="post" id="frmCreateUser">
+
+
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="FirstName"></label>
+                    <input asp-for="FirstName" class="form-control" />
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LastName"></label>
+                    <input asp-for="LastName" class="form-control" />
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" class="form-control" id="Email" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password"></label>
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label>Role Name</label>
+                    <select asp-for="RoleId" asp-items="(IEnumerable<SelectListItem>)@ViewData["RoleDTO"]">
+                        <option value="">Lütfen Rol Seçiniz</option>
+                    </select>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>
+
+
+<button onclick="onSave()">Kaydol</button>
+<button onclick="onLogin()">ZatenÜyemisin</button>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   function onLogin() {                            // kayıt olma indexi
+
+            window.location.href = "@Url.Action("Index", "Login")";
+
+    }
+
+
+
+   function onSave() {                                         //form kayıt işlemleri
+      
+       var formData = $("#frmCreateUser").serializeArray();
+       debugger
+      var result = $.ajax({
+          type: "POST",
+         url: "@Url.Action("SignUpWeb", "Individuals")",
+         data:  formData ,
+         dataType: "json",
+         async: false,
+         success: function (result) {
+              if (result.success == true) {
+                     alert("BAŞARILI!");
+                     window.location.href = "@Url.Action("Index", "Login")";
+              }
+              else if (result.success == false) {
+                     $("#Email").attr("autocomplete", "off");
+                     alert("böyle bir kullanıcı zaten kayıtlı!");
+              }
+              else { alert("fail!");
+                     window.location.href = "@Url.Action("SignUp", "Individuals")";
+                   }
+             }
+
+       }).responseJSON;
+       debugger 
+   }
+
+
+</script>
+
+
+

@@ -1,0 +1,105 @@
+﻿@model Entities.InterjectionDTO.UserDTO
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = null;
+}
+<h1>girişyap</h1>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+
+</head>
+<body>
+
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-action="Login" asp-controller="Login" method="post" id="frmLogin">
+
+
+                <div asp-validation-summary="All" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Email"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Password"></label>
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                @*<button type="submit" class="btn btn-primary">Login</button>*@
+
+            </form>
+            <a class="btn btn-info" asp-controller="Login" asp-action="GoogleLogin">Log In With Google</a>
+        </div>
+    </div>
+
+
+
+
+</body>
+</html>
+
+
+<button onclick="onLogin()">girişyap</button>
+
+<button onclick="onSave()">Kaydol</button>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script type="text/javascript">
+
+
+
+
+
+
+
+
+
+
+
+
+    function onSave() {        //kayıt olma indexi
+
+       window.location.href = "@Url.Action("SignUpWeb", "Individuals")";
+
+    }
+
+
+
+
+
+    function onLogin() {                         //giriş  kayıtlarının gönderildigi yer
+        var formData = $("#frmLogin").serializeArray();
+        var resutl= $.ajax({
+           type: "POST",
+           url: "@Url.Action("Login", "Login")",
+           data:  formData ,
+           dataType: "json",
+           async: false,
+           success: function (result) {
+              if (result.success == true) {
+                 alert("BAŞARILI!");
+                 window.location.href = 'HomePage/Index?success=' + result.success;
+               }
+               else { alert("fail!"); }
+               }
+            }).responseJSON;
+        }
+
+
+
+</script>
+
+
+
+
+
+

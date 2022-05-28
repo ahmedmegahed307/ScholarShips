@@ -1,0 +1,40 @@
+﻿@model Entities.InterjectionDTO.CustomPostingDTO
+
+    <div id="kart" class="card col-3 mb-3">
+        <div class="d-lg-none d-grid card-header">
+            <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#form" aria-controls="form" aria-expanded="true" aria-label="Toggle Form">
+                Toggle Form
+            </button>
+        </div>
+        <div id="form" class="collapse card-body"> 
+            <form asp-action="FilteredPosts" asp-controller="HomePage" method="get" class="row g-3">
+                <label for="Keyword" class="form-label">@sharedResource["KeywordSearch"]</label>
+                <input id="Keyword" class="form-control" type="search" placeholder="@sharedResource["Search"]">
+                <label for="Program" class="form-label">@sharedResource["ProgramsFor"]</label>
+                <select id="PostingTypeId" asp-for="PostingTypeId" asp-items="@ViewBag.PostingTypeDTO">
+                    <option value="0">@sharedResource["SelectPostingType"]</option>
+                </select>
+
+                <label for="Country" class="form-label">@sharedResource["CountryOfOrigin"]</label>
+                <select id="CountryId" asp-for="CountryId" asp-items="@ViewBag.CountryDTO">
+                    <option value="0">@sharedResource["SelectCountry"]</option>
+                </select>
+
+                <label for="Subject" class="form-label">@sharedResource["Subject"]</label>
+                @*<select id="DisciplineId" asp-items="(IEnumerable<SelectListItem>)@ViewData["DisciplineDTO"]">*@
+                <select id="DisciplineId" asp-for="DisciplineId" asp-items="@ViewBag.DisciplineDTO">
+                    <option value="0">@sharedResource["SelectDiscipline"]</option>
+                </select>
+
+                <label for="Intention" class="form-label">@sharedResource["Intention"]</label>
+                @*<select id="TitleId" asp-items="(IEnumerable<SelectListItem>)@ViewData["TitleDTO"]">*@
+                <select id="TitleId" asp-for="TitleId" asp-items="@ViewBag.TitleDTO">
+                    <option value="0">@sharedResource["SelectTitle"]</option>
+                </select>
+
+                <div class="d-grid">
+                    <button class="btn btn-primary" type="submit">@sharedResource["Submit"]</button>
+                </div>
+            </form>
+        </div>
+    </div>
